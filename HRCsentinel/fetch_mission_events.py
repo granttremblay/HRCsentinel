@@ -31,7 +31,7 @@ def fetch_mission_events(events_to_query):
 
     for item in events_to_query:
         
-        event = getattr(events, "{}".format(item))
+        event = getattr(events, "{}".format(item)) # This just calls events.eclipses, events.rad_zones, etc. 
         table = event.table
         table.write("{}_table.csv".format(item), format="csv")
         print("{} [DONE]".format(item))
@@ -57,7 +57,7 @@ def main():
     os.chdir(working_dir)
 
     # Pick the events you want
-    events = ["orbits", "dsn_comms", "dwells", "eclipses", "rad_zones", "safe_suns", "scs107s"]
+    events = ["orbits", "dsn_comms", "dwells", "eclipses", "rad_zones", "safe_suns", "scs107s", "major_events"]
 
     fetch_mission_events(events)
 

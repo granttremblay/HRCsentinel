@@ -37,6 +37,16 @@ def fetch_mission_events(events_to_query):
         print("{} [DONE]".format(item))
         os.system("scp -q {}_table.csv grant@symmetry.cfa.harvard.edu:/Users/grant/Dropbox/HRCOps/MSIDCloud/".format(item))
         os.remove("{}_table.csv".format(item))
+    
+    # SPECIAL REQUESTS TO BE RUN OUTSIDE OF FOR LOOP
+
+    highrad = events.major_events.filter(note__icontains='radiation')
+    highrad_table = highrad.table
+    highrad_table.write("highradiation_table.csv", format="csv")
+    print("Special search for RadMon Trips [DONE]")
+    os.system("scp -q highradiation_table.csv grant@symmetry.cfa.harvard.edu:/Users/grant/Dropbox/HRCOps/MSIDCloud/")
+    os.remove("highradiation_table.csv")
+
     print("Push to MSID Cloud [DONE]")
     print("Clean up [DONE]")
 
@@ -57,7 +67,7 @@ def main():
     os.chdir(working_dir)
 
     # Pick the events you want
-    events = ["orbits", "dsn_comms", "dwells", "eclipses", "rad_zones", "safe_suns", "scs107s", "major_events"]
+    events = ["obsids", "orbits", "dsn_comms", "dwells", "eclipses", "rad_zones", "safe_suns", "scs107s", "major_events"]
 
     fetch_mission_events(events)
 

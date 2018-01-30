@@ -4,6 +4,8 @@
 goes2hrc.py: Convert recent GOES pchan 5min data to estimated HRC Shield Rates
 '''
 
+from __future__ import print_function
+
 import os
 import sys
 import glob

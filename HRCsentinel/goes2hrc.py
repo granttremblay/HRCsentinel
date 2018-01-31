@@ -30,7 +30,7 @@ from astropy.table import hstack
 import numpy as np
 np.seterr(divide='ignore', invalid='ignore')
 
-from scipy import stats
+import hrccore as hrc
 
 
 def main():
@@ -103,10 +103,9 @@ def process_goes_archive(goes_data_directory):
 
     stacked_goes_tables = stack_goes_tables(allfiles)
 
-    goestimes = convert_goes_time(stacked_goes_tables)
+    goestimes = hrc.convert_goes_time(stacked_goes_tables)
 
-    hrc_est_rate1, hrc_est_rate2 = estimate_HRC_shieldrates(
-        stacked_goes_tables)
+    hrc_est_rate1, hrc_est_rate2 = hrc.estimate_HRC_shieldrates(stacked_goes_tables)
 
     final_table = Table([goestimes, hrc_est_rate1, hrc_est_rate2], names=(
         "Times", "HRC_Rate1", "HRC_Rate2"))
@@ -133,68 +132,6 @@ def stack_goes_tables(allfiles):
     stacked_goes_tables = vstack(alltables)
 
     return stacked_goes_tables
-
-
-def convert_goes_time(rawtable):
-    '''
-    Convert GOES ascii data time columns into datetime objects.
-    '''
-
-    length = len(rawtable['col1'])
-    goestimes = []
-
-    for i in range(length):
-        year = rawtable['col1'][i]
-        month = rawtable['col2'][i]
-        day = rawtable['col3'][i]
-        daysecond = rawtable['col6'][i]
-
-        struc_time = time.gmtime(int(daysecond))
-
-        hour = struc_time.tm_hour
-        minute = struc_time.tm_min
-        second = struc_time.tm_sec
-
-        goesdate = dt.datetime(year=year, month=month,
-                               day=day, hour=hour,
-                               minute=minute, second=second)
-
-        goestimes.append(goesdate)
-
-    print("GOES time data converted to datetime objects.")
-
-    return goestimes
-
-
-def estimate_HRC_shieldrates(master_table):
-    '''
-    Makes two estimates of the HRC shield rate, according
-    to J. Chappell's formulae (which are known to work very well).
-    '''
-
-    p4 = master_table['col9']  # Protons from 15-40 MeV in #/cm2-s-sr-MeV
-    p5 = master_table['col10']  # 38-82 MeV
-    p6 = master_table['col11']  # 84-200 MeV
-
-    try:
-        h = p4 / p5
-    except ZeroDivisionError:
-        h = np.NaN
-
-    np.seterr(divide='ignore', invalid='ignore')
-
-    # This is largely pulled out of you-know-where.
-    hrc_est_rate1 = (6000 * p4 + 270000 * p5 + 100000 * p6)
-    hrc_est_rate2 = ((-h * 200 * p4) + (h * 9000 * p5) +
-                     (h * 11000 * p6) + hrc_est_rate1) / 1.7
-
-    # Mask bad values with NaNs.
-    hrc_est_rate1[hrc_est_rate1 < 100] = np.nan
-    hrc_est_rate2[hrc_est_rate2 < 100] = np.nan
-
-    print("HRC Shield Rates Estimated from GOES Data.")
-
-    return hrc_est_rate1, hrc_est_rate2
 
 
 if __name__ == '__main__':

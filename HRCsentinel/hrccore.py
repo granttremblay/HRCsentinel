@@ -1,6 +1,39 @@
-'''
-TIME CONVERTERS
-'''
+import os
+import sys
+
+import time
+import datetime as dt
+
+from astropy.io import ascii
+from astropy.table import Table
+from astropy.table import vstack
+
+import numpy as np
+
+from scipy.signal import argrelmax
+
+import matplotlib.pyplot as plt
+from matplotlib.dates import epoch2num
+
+import numpy as np
+from scipy import stats
+
+
+
+def styleplots():
+    """
+    Make plots pretty and labels clear.
+    """
+    plt.style.use('ggplot')
+
+    labelsizes = 15
+
+    plt.rcParams['font.size'] = labelsizes
+    plt.rcParams['axes.titlesize'] = 12
+    plt.rcParams['axes.labelsize'] = labelsizes
+    plt.rcParams['xtick.labelsize'] = labelsizes
+    plt.rcParams['ytick.labelsize'] = labelsizes
+
 
 def convert_chandra_time(rawtimes):
     """
@@ -32,6 +65,24 @@ def convert_chandra_time(rawtimes):
                    rawtimes[0]) / 86400. + plotdate_start
 
     return chandratime
+
+def quickplot(x, save=False, filename=None):
+    """
+    A quicklook function to only plot an MSID vs its index (e.g., for get dates, etc)
+    """
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    ax.plot(x, marker='o', markersize=1, lw=0, rasterized=True)
+    ax.set_ylabel('Telemetry Value')
+    ax.set_xlabel('Index of Telemetry Datapoint')
+
+    plt.show()
+
+    if save is True:
+        if filename is not None:
+            fig.savefig(filename, dpi=400)
+        else:
+            print("Specify a filename (i.e. 'figure.pdf').")
 
 
 def convert_orbit_time(rawtimes):
@@ -83,56 +134,36 @@ def convert_goes_time(rawtable):
     return goestimes
 
 
-'''
-ARCHIVE & MSID PARSERS
-'''
 
-def parse_goes_archive(goes_data_directory):
+def estimate_HRC_shieldrates(master_table):
+    '''
+    Makes two estimates of the HRC shield rate, according
+    to J. Chappell's formulae (which are known to work very well).
+    '''
 
-    # The GOES data directory has some shell scripts and a README, you don't want to stack those obvi. 
-    files_to_read = glob.glob(goes_data_directory + "*Gp*pchan*txt")
+    p4 = master_table['col9']  # Protons from 15-40 MeV in #/cm2-s-sr-MeV
+    p5 = master_table['col10']  # 38-82 MeV
+    p6 = master_table['col11']  # 84-200 MeV
 
-    allfiles = sorted(files_to_read)  # The list won't be alphanumeric. Fix that.
+    try:
+        h = p4 / p5
+    except ZeroDivisionError:
+        h = np.NaN
 
-    master_table = stack_goes_tables(allfiles)
-    
-    goestimes = convert_goes_time(master_table)
-    
-    estrates = estimate_HRC_shieldrates(master_table)
+    np.seterr(divide='ignore', invalid='ignore')
 
-    GOESrates = {"GOES Times": goestimes,
-                 "GOES HRC Estimate 1": estrates["HRC Est. Rate 1"],
-                 "GOES HRC Estimate 2": estrates["HRC Est. Rate 2"]}
+    # This is largely pulled out of you-know-where.
+    hrc_est_rate1 = (6000 * p4 + 270000 * p5 + 100000 * p6)
+    hrc_est_rate2 = ((-h * 200 * p4) + (h * 9000 * p5) +
+                     (h * 11000 * p6) + hrc_est_rate1) / 1.7
 
-    print("GOES data parsed and converted.")
+    # Mask bad values with NaNs.
+    hrc_est_rate1[hrc_est_rate1 < 100] = np.nan
+    hrc_est_rate2[hrc_est_rate2 < 100] = np.nan
 
-    return GOESrates
+    print("HRC Shield Rates Estimated from GOES Data.")
+
+    return hrc_est_rate1, hrc_est_rate2
 
 
-def parse_orbits(spacecraft_event_directory, spacecraft_event_filename):
-
-    # Make sure the .csv file exists before trying this:
-    if os.path.isfile(spacecraft_event_directory + spacecraft_event_filename):
-        msid = ascii.read(spacecraft_event_directory +
-                          spacecraft_event_filename)
-
-        print("Spacecraft orbits parsed")
-    else:
-        print("MSID CSV file not present")
-        sys.exit(1)
-
-    # Available fields in Orbit table:
-    # start,stop,tstart,tstop,dur,orbit_num,perigee,apogee,t_perigee,
-    # start_radzone,stop_radzone,dt_start_radzone,dt_stop_radzone
-
-    # Times are given like: 2000:003:15:27:47.271, so you need to convert
-    # them into an mpl date.
-
-    radzone_entry = convert_orbit_time(msid['start_radzone'])
-    radzone_exit = convert_orbit_time(msid['stop_radzone'])
-
-    orbit = {"Radzone Entry": radzone_entry,
-             "Radzone Exit": radzone_exit}
-
-    return orbit
 

@@ -70,6 +70,21 @@ def convert_chandra_time(rawtimes):
 
     return chandratime
 
+
+def parse_generic_msid(msid, valtype):
+    """
+    Parse & convert the CSVs from MSIDCloud relevant to this study.
+    """
+
+    msid = ascii.read(msid, format="fast_csv")
+
+    times = convert_chandra_time(msid["times"])
+    values = msid[valtype]
+
+    print("MSIDs parsed")
+    return times, values
+
+
 def quickplot(x, save=False, filename=None):
     """
     A quicklook function to only plot an MSID vs its index (e.g., for get dates, etc)
@@ -106,8 +121,17 @@ def convert_orbit_time(rawtimes):
 
     return orbittime
 
+def convert_goes_time(rawtimes):
 
-def convert_goes_time(rawtable):
+    goestime = []
+
+    for i in range(len(rawtimes)):
+        goestime.append(dt.datetime.strptime(rawtimes[i], '%Y-%m-%d %H:%M:%S'))
+
+    return goestime
+
+
+def convert_goes_time_in_stacked_tables(rawtable):
     '''
     Convert GOES ascii data time columns into datetime objects.
     '''

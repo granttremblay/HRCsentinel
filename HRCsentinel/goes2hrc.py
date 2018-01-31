@@ -103,7 +103,7 @@ def process_goes_archive(goes_data_directory):
 
     stacked_goes_tables = stack_goes_tables(allfiles)
 
-    goestimes = hrc.convert_goes_time(stacked_goes_tables)
+    goestimes = hrc.convert_goes_time_in_stacked_tables(stacked_goes_tables)
 
     hrc_est_rate1, hrc_est_rate2 = hrc.estimate_HRC_shieldrates(stacked_goes_tables)
 

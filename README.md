@@ -1,4 +1,4 @@
-![HRCsentinel](misc/eyes.jpg)
+![HRCsentinel](misc/sentinel.jpg)
 
 # HRCsentinel
 

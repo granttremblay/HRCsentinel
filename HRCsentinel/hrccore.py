@@ -71,37 +71,6 @@ def convert_chandra_time(rawtimes):
     return chandratime
 
 
-def parse_generic_msid(msid, valtype):
-    """
-    Parse & convert the CSVs from MSIDCloud relevant to this study.
-    """
-
-    msid = ascii.read(msid, format="fast_csv")
-
-    times = convert_chandra_time(msid["times"])
-    values = msid[valtype]
-
-    print("MSIDs parsed")
-    return times, values
-
-
-def quickplot(x, save=False, filename=None):
-    """
-    A quicklook function to only plot an MSID vs its index (e.g., for get dates, etc)
-    """
-    fig, ax = plt.subplots(figsize=(12, 8))
-
-    ax.plot(x, marker='o', markersize=1, lw=0, rasterized=True)
-    ax.set_ylabel('Telemetry Value')
-    ax.set_xlabel('Index of Telemetry Datapoint')
-
-    plt.show()
-
-    if save is True:
-        if filename is not None:
-            fig.savefig(filename, dpi=400)
-        else:
-            print("Specify a filename (i.e. 'figure.pdf').")
 
 
 def convert_orbit_time(rawtimes):
@@ -195,3 +164,94 @@ def estimate_HRC_shieldrates(master_table):
 
 
 
+def parse_generic_msid(msid, valtype):
+    """
+    Parse & convert the CSVs from MSIDCloud relevant to this study.
+    """
+
+    msid = ascii.read(msid, format="fast_csv")
+
+    times = convert_chandra_time(msid["times"])
+    values = msid[valtype]
+
+    print("MSIDs parsed")
+    return times, values
+
+
+def parse_goes(goestable):
+    """
+    Parse my GOES estimated shieldrates table created by goes2hrc.py
+    """
+
+    goes = ascii.read(goestable, format="fast_csv")
+
+    goestimes = convert_goes_time(goes["Times"])
+    goesrates = goes['HRC_Rate2']
+
+    print("GOES-to-HRC estimates parsed")
+
+    return goestimes, goesrates
+
+
+def parse_orbits(orbit_msid):
+    '''
+    WRITE ME!!! 
+    '''
+    
+
+    # Make sure the .csv file exists before trying this:
+    if os.path.isfile(orbit_msid):
+        msid = ascii.read(orbit_msid, format="fast_csv")
+
+        print("Spacecraft orbits parsed")
+    else:
+        print("MSID CSV file not present")
+        sys.exit(1)
+
+    # Available fields in Orbit table:
+    # start,stop,tstart,tstop,dur,orbit_num,perigee,apogee,t_perigee,
+    # start_radzone,stop_radzone,dt_start_radzone,dt_stop_radzone
+
+    # Times are given like: 2000:003:15:27:47.271, so you need to convert
+    # them into an mpl date.
+
+    radzone_entry = convert_orbit_time(msid['start_radzone'])
+    radzone_exit = convert_orbit_time(msid['stop_radzone'])
+
+    orbit = {"Radzone Entry": radzone_entry,
+             "Radzone Exit": radzone_exit}
+
+    return orbit
+
+
+def parse_scs107s(scs107s_table):
+    """
+    Parse SCS 107s
+    """
+
+    scs107s = ascii.read(scs107s_table)
+
+    scs107times = convert_chandra_time(scs107s['tstart'])
+
+    print("Found {} executions of SCS 107 over the mission lifetime".format(len(scs107times)))
+
+    return scs107times
+
+
+def quickplot(x, save=False, filename=None):
+    """
+    A quicklook function to only plot an MSID vs its index (e.g., for get dates, etc)
+    """
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    ax.plot(x, marker='o', markersize=1, lw=0, rasterized=True)
+    ax.set_ylabel('Telemetry Value')
+    ax.set_xlabel('Index of Telemetry Datapoint')
+
+    plt.show()
+
+    if save is True:
+        if filename is not None:
+            fig.savefig(filename, dpi=400)
+        else:
+            print("Specify a filename (i.e. 'figure.pdf').")

@@ -30,7 +30,11 @@ from astropy.table import hstack
 import numpy as np
 np.seterr(divide='ignore', invalid='ignore')
 
-import hrccore as hrc
+try:
+    import hrccore as hrc
+    print("HRCsentinel Intitialized")
+except ImportError:
+    raise ImportError("HRCsentinel required. Download here: https://github.com/granttremblay/HRCsentinel")
 
 
 def main():

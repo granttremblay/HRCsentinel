@@ -1,8 +1,7 @@
-
 #!/usr/bin/env python
 
 '''
-plots_for_paper.py: Create plots for Grant Tremblay's HRC Shield Memo
+goes2hrc.py: Convert recent GOES pchan 5min data to estimated HRC Shield Rates
 '''
 
 import os
@@ -20,10 +19,14 @@ from matplotlib.dates import num2date
 import numpy as np
 # np.seterr(divide='ignore', invalid='ignore')
 
-import hrccore as hrc
+try:
+	import hrccore as hrc
+	print("HRCsentinel Intitialized")
+except ImportError:
+	raise ImportError("HRCsentinel required. Download here: https://github.com/granttremblay/HRCsentinel")
 
 
-def main():
+def generate_scs107_plots():
 
     # Ensure that the home directory is found regardless of platform,
     # e.g. /Users/grant vs /home/grant
@@ -39,14 +42,14 @@ def main():
     msid_directory = home_directory + "/Dropbox/HRCOps/MSIDCloud/"
     goes_directory = home_directory + "/Dropbox/HRCOps/ShieldCloud/"
 
-    times, values = parse_msid(msid_directory + "2SHEV1RT_5min_lifetime.csv", "midvals")
+    times, values = hrc.parse_generic_msid(msid_directory + "2SHEV1RT_5min_lifetime.csv", "midvals")
 
     # mask zero values
     values[values == 0] = np.nan
 
-    goestimes, goesrates = parse_goes(goes_directory + "HRC_GOES_estrates.csv")
-    orbit = parse_orbits(msid_directory + "orbits_table.csv")
-    scs107times = parse_scs107s(msid_directory + "scs107s_table.csv")
+    goestimes, goesrates = hrc.parse_goes(goes_directory + "HRC_GOES_estrates.csv")
+    orbit = hrc.parse_orbits(msid_directory + "orbits_table.csv")
+    scs107times = hrc.parse_scs107s(msid_directory + "scs107s_table.csv")
 
     data = {"times": times,
             "values": values,
@@ -156,79 +159,9 @@ def shieldsentinel_plotter(data, xlims=None, ylims=None, log=False, title=None, 
     # Close the plot so you don't eat too much memory when making 100 of these.
     plt.close()
 
-def parse_msid(msid, valtype):
-    """
-    Parse & convert the CSVs from MSIDCloud relevant to this study.
-    """
-
-    msid = ascii.read(msid, format="fast_csv")
-
-    times = hrc.convert_chandra_time(msid["times"])
-    values = msid[valtype]
-
-    print("MSIDs parsed")
-    return times, values
-
-
-
-def parse_goes(goestable):
-    """
-    Parse my GOES estimated shieldrates table created by goes2hrc.py
-    """
-
-    goes = ascii.read(goestable, format="fast_csv")
-
-    goestimes = hrc.convert_goes_time(goes["Times"])
-    goesrates = goes['HRC_Rate2']
-
-    print("GOES-to-HRC estimates parsed")
-
-    return goestimes, goesrates
-
-
-def parse_orbits(orbit_msid):
-
-    # Make sure the .csv file exists before trying this:
-    if os.path.isfile(orbit_msid):
-        msid = ascii.read(orbit_msid, format="fast_csv")
-
-        print("Spacecraft orbits parsed")
-    else:
-        print("MSID CSV file not present")
-        sys.exit(1)
-
-    # Available fields in Orbit table:
-    # start,stop,tstart,tstop,dur,orbit_num,perigee,apogee,t_perigee,
-    # start_radzone,stop_radzone,dt_start_radzone,dt_stop_radzone
-
-    # Times are given like: 2000:003:15:27:47.271, so you need to convert
-    # them into an mpl date.
-
-    radzone_entry = hrc.convert_orbit_time(msid['start_radzone'])
-    radzone_exit = hrc.convert_orbit_time(msid['stop_radzone'])
-
-    orbit = {"Radzone Entry": radzone_entry,
-             "Radzone Exit": radzone_exit}
-
-    return orbit
-
-
-def parse_scs107s(scs107s_table):
-    """
-    Parse SCS 107s
-    """
-
-    scs107s = ascii.read(scs107s_table)
-
-    scs107times = hrc.convert_chandra_time(scs107s['tstart'])
-
-    print("Found {} executions of SCS 107 over the mission lifetime".format(len(scs107times)))
-
-    return scs107times
-
 
 if __name__ == '__main__':
     start_time = time.time()
-    main()
+    generate_scs107_plots()
     runtime = round((time.time() - start_time), 3)
     print("Finished in {} minutes.".format(runtime/60))

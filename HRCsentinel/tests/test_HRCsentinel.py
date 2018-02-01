@@ -1,4 +1,4 @@
-from context import HRCsentinel
+from ..hrccore import convert_chandra_time
 
 import unittest
 

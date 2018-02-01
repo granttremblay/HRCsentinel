@@ -24,7 +24,8 @@ from matplotlib.dates import epoch2num
 
 import numpy as np
 
-import hrccore as hrc
+from hrcsentinel import hrccore as hrc
+from hrcsentinel import hrcplotters as hrcplot
 
 
 def main():
@@ -39,7 +40,7 @@ def main():
 
     msidlist = glob.glob("*lifetime.csv")
 
-    hrc.styleplots()
+    hrcplot.styleplots()
 
     for msid in msidlist:
         msidName, values, times = parse_msid(msid)

@@ -20,8 +20,8 @@ import numpy as np
 # np.seterr(divide='ignore', invalid='ignore')
 
 try:
-	import hrccore as hrc
-	print("HRCsentinel Intitialized")
+	from HRCsentinel import hrccore as hrc
+	# I still need to better understand this: https://stackoverflow.com/questions/16981921/relative-imports-in-python-3/28154841
 except ImportError:
 	raise ImportError("HRCsentinel required. Download here: https://github.com/granttremblay/HRCsentinel")
 

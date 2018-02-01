@@ -23,7 +23,6 @@ import numpy as np
 from scipy import stats
 
 
-
 def styleplots():
     """
     Make plots pretty and labels clear.

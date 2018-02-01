@@ -22,20 +22,65 @@ from matplotlib.dates import epoch2num
 import numpy as np
 from scipy import stats
 
+# READERS, PARSERS, & CONVERTERS are here. 
 
-def styleplots():
-    """
-    Make plots pretty and labels clear.
-    """
-    plt.style.use('ggplot')
+def read_hrc_evt1(input_evt1_file):
 
-    labelsizes = 15
+    evt1_hdulist = fits.open(input_evt1_file)
+    rawdata = evt1_hdulist[1].data
 
-    plt.rcParams['font.size'] = labelsizes
-    plt.rcParams['axes.titlesize'] = 12
-    plt.rcParams['axes.labelsize'] = labelsizes
-    plt.rcParams['xtick.labelsize'] = labelsizes
-    plt.rcParams['ytick.labelsize'] = labelsizes
+    rawdata = Table(rawdata)
+
+    #data = maskdata(rawdata)
+    data = rawdata
+
+    a = data["au1"] # otherwise known as "a1"
+    b = data["au2"] # "a2"
+    c = data["au3"] # "a3"
+
+    with np.errstate(invalid='ignore'):
+        fine_position= ((c - a) / (a + b + c))
+        normalized_central_tap_amplitude = b / (a + b + c)
+
+        success = len(fine_position) > 0 and len(normalized_central_tap_amplitude) > 0
+
+        if success:
+            print("Calculated Fine Position and Normalized Central Tap Amplitude")
+        else:
+            print("Unable to parse input evt1 file. Please double check this!")
+            sys.exit('Error!')
+
+    parsed_data = {"time" : data["time"],
+                   "crsv" : data["crsv"], # Coarse position V axis
+                   "crsu" : data["crsu"], # Coarse position U axis
+                   "amp_sf" : data["amp_sf"], # Amplitude scale factor
+                   "av1" : data["av1"], # V axis ADC1
+                   "av2" : data["av2"], # V axis ADC2
+                   "av3" : data["av3"], # V axis ADC3
+                   "au1" : data["au1"], # U axis ADC1
+                   "au2" : data["au2"], # U axis ADC2
+                   "au3" : data["au3"], # U axis ADC3
+                   "rawx" : data["rawx"], # Raw X position (no degapping)
+                   "rawy" : data["rawy"], # Raw Y position (no degapping)
+                   "chipx" : data["chipx"], # X position of center pixel of event
+                   "chipy" : data["chipy"], # Y position of center pixel of event
+                   "tdetx" : data["tdetx"], #  X position of event in tiled detector coordinates
+                   "tdety" : data["tdety"], #  Y position of event in tiled detector coordinates
+                   "detx" : data["detx"], # X position of event in HRC detector coordinates
+                   "dety" : data["dety"], # Y position of event in HRC detector coordinates
+                   "x" : data["x"], # X position of event in Sky coordinates
+                   "y" : data["y"], # X position of event in Sky coordinates
+                   "pha" : data["pha"], # Total pulse height of event
+                   "pi" : data["pi"], # Total invariant energy of event
+                   "sumamps": data["sumamps"], # Sum of all amp readouts
+                   "chip_id" : data["chip_id"], # Chip ID
+                   "status": data["status"], # Event status bits
+                   ######## EXTRA QUANTITIES I'VE CALCULATED ###################
+                   "fb" : normalized_central_tap_amplitude,
+                   "fp" : fine_position
+                   }
+
+    return parsed_data
 
 
 def convert_chandra_time(rawtimes):
@@ -177,6 +222,7 @@ def parse_generic_msid(msid, valtype):
     return times, values
 
 
+
 def parse_goes(goestable):
     """
     Parse my GOES estimated shieldrates table created by goes2hrc.py
@@ -190,6 +236,7 @@ def parse_goes(goestable):
     print("GOES-to-HRC estimates parsed")
 
     return goestimes, goesrates
+
 
 
 def parse_orbits(orbit_msid):

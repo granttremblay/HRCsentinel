@@ -24,7 +24,7 @@ from matplotlib.dates import epoch2num
 
 import numpy as np
 
-import hrccore as hrc
+from hrcsentinel import hrccore as hrc
 
 
 def main():

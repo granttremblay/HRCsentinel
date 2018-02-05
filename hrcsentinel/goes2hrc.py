@@ -31,8 +31,8 @@ import numpy as np
 np.seterr(divide='ignore', invalid='ignore')
 
 try:
-    import hrccore as hrc
-    print("HRCsentinel Intitialized")
+    from hrcsentinel import hrccore as hrc
+    print("hrcsentinel Intitialized")
 except ImportError:
     raise ImportError("HRCsentinel required. Download here: https://github.com/granttremblay/HRCsentinel")
 

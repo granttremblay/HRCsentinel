@@ -1,4 +1,4 @@
-![HRCsentinel](misc/sentinel.jpg)
+![hrcsentinel](misc/sentinel.jpg)
 
 # HRCsentinel | Chandra X-ray Observatory
 

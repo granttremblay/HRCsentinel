@@ -21,9 +21,8 @@ import numpy as np
 
 try:
 	from hrcsentinel import hrccore as hrc
-	# I still need to better understand this: https://stackoverflow.com/questions/16981921/relative-imports-in-python-3/28154841
 except ImportError:
-	raise ImportError("HRCsentinel required. Download here: https://github.com/granttremblay/HRCsentinel")
+	raise ImportError("hrcsentinel required. Download here: https://github.com/granttremblay/HRCsentinel")
 
 
 def generate_scs107_plots():
@@ -59,7 +58,7 @@ def generate_scs107_plots():
             "scs107times": scs107times}
 
 
-    ylims = (100, 100000)
+    ylims = (100, 70000)
 
     # SCS 107 times are already in no. of days since 1 AD
     daypad = 2 # days on either side of SCS 107 excecution to plot
@@ -164,4 +163,4 @@ if __name__ == '__main__':
     start_time = time.time()
     generate_scs107_plots()
     runtime = round((time.time() - start_time), 3)
-    print("Finished in {} minutes.".format(runtime/60))
+    print("Finished in {} minutes.".format(round(runtime/60, 3)))

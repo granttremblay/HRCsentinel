@@ -66,8 +66,6 @@ def generate_scs107_plots():
     # SCS 107 times are already in no. of days since 1 AD
     daypad = 2 # days on either side of SCS 107 excecution to plot
 
-    daystep_files_for_gif = []
-
     for day in every_day:
 
         # Give the PDF a useful title & filename with the SCS 107 execution date
@@ -90,14 +88,6 @@ def generate_scs107_plots():
                                dpi=150,
                                filename=figure_save_directory + filename_with_date)
 
-        daystep_files_for_gif.append(filename_with_date)
-
-    # Make the mission lifetime movie
-
-    gif_frames = []
-    for pngfile in daystep_files_for_gif:
-        gif_frames.append(imageio.imread(pngfile))
-    imageio.mimsave(figure_save_directory + "mission_lifetime_movie.gif", gif_frames)
 
     for shutdown in scs107times:
 

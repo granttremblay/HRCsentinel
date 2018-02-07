@@ -25,6 +25,8 @@ except ImportError:
 	raise ImportError("hrcsentinel required. Download here: https://github.com/granttremblay/HRCsentinel")
 
 
+import imageio
+
 def generate_scs107_plots():
 
     # Ensure that the home directory is found regardless of platform,
@@ -32,7 +34,7 @@ def generate_scs107_plots():
     # script_location = os.getcwd()
 
     home_directory = os.path.expanduser("~")
-    figure_save_directory = home_directory + "/Dropbox/HRCOps/ShieldCloud/scs107_plots/nolog/"
+    figure_save_directory = home_directory + "/Dropbox/HRCOps/ShieldCloud/scs107_plots/wholemission/"
 
     if not os.path.exists(figure_save_directory):
         print("Created {}".format(figure_save_directory))
@@ -49,6 +51,7 @@ def generate_scs107_plots():
     goestimes, goesrates = hrc.parse_goes(goes_directory + "HRC_GOES_estrates.csv")
     orbit = hrc.parse_orbits(msid_directory + "orbits_table.csv")
     scs107times = hrc.parse_scs107s(msid_directory + "scs107s_table.csv")
+    every_day = times[1::288] # every 228 steps = 1 day in 5 minute increments
 
     data = {"times": times,
             "values": values,
@@ -62,6 +65,39 @@ def generate_scs107_plots():
 
     # SCS 107 times are already in no. of days since 1 AD
     daypad = 2 # days on either side of SCS 107 excecution to plot
+
+    daystep_files_for_gif = []
+
+    for day in every_day:
+
+        # Give the PDF a useful title & filename with the SCS 107 execution date
+        filename_with_date = num2date(day).strftime('%Y-%m-%d_daystep') + ".png"
+        title = num2date(day).strftime('%Y')
+
+        # Plot +/- daypad around each SCS 107 execution time
+        scs107_xlims = (num2date(day-daypad), num2date(day+daypad))
+
+        # Make the plots. This will take a while!
+        shieldsentinel_plotter(data,
+                               xlims=scs107_xlims,
+                               ylims=ylims,
+                               log=False,
+                               markersize=2.0,
+                               title=title,
+                               showfig=False,
+                               savefig=True,
+                               showlegend=False,
+                               dpi=150,
+                               filename=figure_save_directory + filename_with_date)
+
+        daystep_files_for_gif.append(filename_with_date)
+
+    # Make the mission lifetime movie
+
+    gif_frames = []
+    for pngfile in daystep_files_for_gif:
+        gif_frames.append(imageio.imread(pngfile))
+    imageio.mimsave(figure_save_directory + "mission_lifetime_movie.gif", gif_frames)
 
     for shutdown in scs107times:
 
@@ -84,7 +120,7 @@ def generate_scs107_plots():
                                filename=figure_save_directory + filename_with_date)
 
 
-def shieldsentinel_plotter(data, xlims=None, ylims=None, log=False, title=None, markersize=1.0,
+def shieldsentinel_plotter(data, xlims=None, ylims=None, log=False, title=None, markersize=1.0, showlegend=True,
              rasterized=True, dpi=300, showfig=True, savefig=False, filename="NAME_ME.pdf"):
 
 
@@ -144,13 +180,14 @@ def shieldsentinel_plotter(data, xlims=None, ylims=None, log=False, title=None, 
     ax.set_ylabel(r'Counts s$^{-1}$')
     ax.set_xlabel('Date')
 
-    ax.legend()
+    if showlegend is True:
+        ax.legend()
 
     #ax.set_xlim(dt.datetime(2017,9,3),dt.datetime(2017,9,21))
 
     if savefig is True:
         print("Saving figure to {}.".format(filename))
-        fig.savefig(filename, dpi=dpi, bbox_inches='tight')
+        fig.savefig(filename, dpi=dpi)
 
     if showfig is True:
         plt.show()

@@ -117,7 +117,7 @@ def main():
 		                    "Point_SunCentAng" # Pointing-Solar angle (from center) (deg) 
 		                   ]
 
-    fetch_msids(hrcmsids_fullres, sampling="full", timespan="lifetime")
+    #fetch_msids(hrcmsids_fullres, sampling="full", timespan="lifetime")
     fetch_msids(hrcmsids, sampling="daily", timespan="lifetime")
     fetch_msids(hrcmsids, sampling="5min", timespan="lifetime")
     fetch_msids(hrcmsids_fullres, sampling="full", timespan="pastyear")

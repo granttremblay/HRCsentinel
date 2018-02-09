@@ -177,7 +177,7 @@ def shieldsentinel_plotter(data, xlims=None, ylims=None, log=False, title=None, 
 
     if savefig is True:
         print("Saving figure to {}.".format(filename))
-        fig.savefig(filename, dpi=dpi)
+        fig.savefig(filename, dpi=dpi, bbox_inches='tight')
 
     if showfig is True:
         plt.show()

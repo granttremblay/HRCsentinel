@@ -34,7 +34,7 @@ def generate_scs107_plots():
     # script_location = os.getcwd()
 
     home_directory = os.path.expanduser("~")
-    figure_save_directory = home_directory + "/Dropbox/HRCOps/ShieldCloud/scs107_plots/wholemission/"
+    figure_save_directory = home_directory + "/Dropbox/HRCOps/ShieldCloud/scs107_plots/new/"
 
     if not os.path.exists(figure_save_directory):
         print("Created {}".format(figure_save_directory))
@@ -66,27 +66,27 @@ def generate_scs107_plots():
     # SCS 107 times are already in no. of days since 1 AD
     daypad = 2 # days on either side of SCS 107 excecution to plot
 
-    for day in every_day:
+    # for day in every_day:
 
-        # Give the PDF a useful title & filename with the SCS 107 execution date
-        filename_with_date = num2date(day).strftime('%Y-%m-%d_daystep') + ".png"
-        title = num2date(day).strftime('%Y')
+    #     # Give the PDF a useful title & filename with the SCS 107 execution date
+    #     filename_with_date = num2date(day).strftime('%Y-%m-%d_daystep') + ".png"
+    #     title = num2date(day).strftime('%Y')
 
-        # Plot +/- daypad around each SCS 107 execution time
-        scs107_xlims = (num2date(day-daypad), num2date(day+daypad))
+    #     # Plot +/- daypad around each SCS 107 execution time
+    #     scs107_xlims = (num2date(day-daypad), num2date(day+daypad))
 
-        # Make the plots. This will take a while!
-        shieldsentinel_plotter(data,
-                               xlims=scs107_xlims,
-                               ylims=ylims,
-                               log=False,
-                               markersize=2.0,
-                               title=title,
-                               showfig=False,
-                               savefig=True,
-                               showlegend=False,
-                               dpi=150,
-                               filename=figure_save_directory + filename_with_date)
+    #     # Make the plots. This will take a while!
+    #     shieldsentinel_plotter(data,
+    #                            xlims=scs107_xlims,
+    #                            ylims=ylims,
+    #                            log=False,
+    #                            markersize=2.0,
+    #                            title=title,
+    #                            showfig=False,
+    #                            savefig=True,
+    #                            showlegend=False,
+    #                            dpi=150,
+    #                            filename=figure_save_directory + filename_with_date)
 
 
     for shutdown in scs107times:
@@ -138,15 +138,15 @@ def shieldsentinel_plotter(data, xlims=None, ylims=None, log=False, title=None, 
 
     # Plot SCS 107s as vertical lines marking start times
     for scs107 in scs107times:
-        plt.axvline(scs107, linestyle='dashed', lw=2.0, color=scs107color, alpha=1.0)
+        plt.axvline(scs107, linestyle='dashed', lw=2.0, color=scs107color, alpha=1.0, rasterized=rasterized)
     # Double plot the Spetembrer Event lines
-    plt.axvline(scs107times[-1], linestyle='dashed', lw=2.0, color=scs107color, alpha=1.0, label="SCS 107 Execution")
+    plt.axvline(scs107times[-1], linestyle='dashed', lw=2.0, color=scs107color, alpha=1.0, label="SCS 107 Execution", rasterized=rasterized)
     # Plot horizontal line showing the SCS 107 threshold for the HRC Shield
-    plt.axhline(y=65535, color=thresholdcolor, alpha=1.0, label="SCS 107 Threshold (65,535 cps)")
+    plt.axhline(y=65535, color=thresholdcolor, alpha=1.0, label="SCS 107 Threshold (65,535 cps)", rasterized=rasterized)
 
     # Plot Radzone Passages, only make a label once .
     for i, (entry, exit) in enumerate(zip(orbit["Radzone Entry"], orbit["Radzone Exit"])):
-        plt.axvspan(entry, exit, alpha=0.4, color='gray', label="Radzone Passage" if i == 0 else "")
+        plt.axvspan(entry, exit, alpha=0.4, color='gray', label="Radzone Passage" if i == 0 else "", rasterized=rasterized)
 
     # Plot the GOES/HRC Estimated rate
     ax.plot_date(goestimes, goesrates, '-', lw=1.0, label="GOES Estimate", color=goescolor, rasterized=rasterized)

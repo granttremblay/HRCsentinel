@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+'''
+generate_shieldlife_movie.py: Generate a boring movie that stiches together the whole mission plots
+'''
+
 
 import os
 import glob

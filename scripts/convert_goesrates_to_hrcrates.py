@@ -32,7 +32,6 @@ np.seterr(divide='ignore', invalid='ignore')
 
 try:
     from hrcsentinel import hrccore as hrc
-    print("hrcsentinel Intitialized")
 except ImportError:
     raise ImportError("HRCsentinel required. Download here: https://github.com/granttremblay/HRCsentinel")
 

@@ -110,7 +110,7 @@ def main():
 		"2CE00ATM",  # CEA Temperature 1 (c)
 		"2CE01ATM", # CEA Temperature 2 (c)
         "2FEPRATM", # FEA PreAmp (c)
-        "2SMTRATM" # Selected Motor Temperature (c)
+        "2SMTRATM", # Selected Motor Temperature (c)
         "2DTSTATT" # OutDet1 Temperature (c)
 		]
 

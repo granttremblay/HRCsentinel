@@ -92,7 +92,7 @@ def main():
                 "2TLEV1RT",  # HRC Detector Event Rates (c/s) (1)
                 "2PRBSVL",   # Primary Bus Voltage (V)
 		"2PRBSCR",   # Primary Bus Current (amps)
-                "2FE00ATM",  # Front-end Temperature (c)  
+        "2FE00ATM",  # Front-end Temperature (c)
 		"2LVPLATM",  # LVPS Plate Temperature (c)
 		"2IMHVATM",  # Imaging Det HVPS Temperature (c)
 		"2IMINATM",  # Imaging Det Temperature (c)
@@ -108,13 +108,17 @@ def main():
 		"2CONDMXT",  # Conduit Temperature (c)
 		"2UVLSPXT",  # Snout Temperature (c)
 		"2CE00ATM",  # CEA Temperature 1 (c)
-		"2CE01ATM"  # CEA Temperature 2 (c)
+		"2CE01ATM", # CEA Temperature 2 (c)
+        "2FEPRATM", # FEA PreAmp (c)
+        "2SMTRATM", # Selected Motor Temperature (c)
+        "2DSTATT", # OutDet1 Temperature (c)
+        "2DCENTRT", # OutDet2 Temperature (c)
 		]
 
     hrcmsids_fullres = ["2SHEV1RT", "2TLEV1RT", "2CE00ATM", "2CE01ATM", "2SPHVATM", "2IMHVATM", "2FE00ATM"]
 
     spacecraft_orbit_pseudomsids = ["Dist_SatEarth", # Chandra-Earth distance (from Earth Center) (m)
-		                    "Point_SunCentAng" # Pointing-Solar angle (from center) (deg) 
+		                    "Point_SunCentAng" # Pointing-Solar angle (from center) (deg)
 		                   ]
 
     #fetch_msids(hrcmsids_fullres, sampling="full", timespan="lifetime")

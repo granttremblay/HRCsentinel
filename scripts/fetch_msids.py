@@ -111,8 +111,7 @@ def main():
 		"2CE01ATM", # CEA Temperature 2 (c)
         "2FEPRATM", # FEA PreAmp (c)
         "2SMTRATM" # Selected Motor Temperature (c)
-        # "2DSTATT", # OutDet1 Temperature (c)
-        # "2DCENTRT" # OutDet2 Temperature (c)
+        "2DTSTATT" # OutDet1 Temperature (c)
 		]
 
     hrcmsids_fullres = ["2SHEV1RT", "2TLEV1RT", "2CE00ATM", "2CE01ATM", "2SPHVATM", "2IMHVATM", "2FE00ATM"]

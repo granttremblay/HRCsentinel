@@ -173,7 +173,6 @@ def parse_generic_msid(msid, valtype):
     times = convert_chandra_time(msid["times"])
     values = msid[valtype]
 
-    print("MSIDs parsed")
     return times, values
 
 

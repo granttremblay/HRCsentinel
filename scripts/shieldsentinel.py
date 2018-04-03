@@ -66,27 +66,27 @@ def generate_scs107_plots():
     # SCS 107 times are already in no. of days since 1 AD
     daypad = 2 # days on either side of SCS 107 excecution to plot
 
-    # for day in every_day:
+    for day in every_day:
 
-    #     # Give the PDF a useful title & filename with the SCS 107 execution date
-    #     filename_with_date = num2date(day).strftime('%Y-%m-%d_daystep') + ".png"
-    #     title = num2date(day).strftime('%Y')
+        # Give the PDF a useful title & filename with the SCS 107 execution date
+        filename_with_date = num2date(day).strftime('%Y-%m-%d_daystep') + ".png"
+        title = num2date(day).strftime('%Y')
 
-    #     # Plot +/- daypad around each SCS 107 execution time
-    #     scs107_xlims = (num2date(day-daypad), num2date(day+daypad))
+        # Plot +/- daypad around each SCS 107 execution time
+        scs107_xlims = (num2date(day-daypad), num2date(day+daypad))
 
-    #     # Make the plots. This will take a while!
-    #     shieldsentinel_plotter(data,
-    #                            xlims=scs107_xlims,
-    #                            ylims=ylims,
-    #                            log=False,
-    #                            markersize=2.0,
-    #                            title=title,
-    #                            showfig=False,
-    #                            savefig=True,
-    #                            showlegend=False,
-    #                            dpi=150,
-    #                            filename=figure_save_directory + filename_with_date)
+        # Make the plots. This will take a while!
+        shieldsentinel_plotter(data,
+                               xlims=scs107_xlims,
+                               ylims=ylims,
+                               log=False,
+                               markersize=2.0,
+                               title=title,
+                               showfig=False,
+                               savefig=True,
+                               showlegend=False,
+                               dpi=150,
+                               filename=figure_save_directory + filename_with_date)
 
 
     for shutdown in scs107times:

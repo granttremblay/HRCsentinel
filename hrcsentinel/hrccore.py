@@ -29,10 +29,11 @@ def styleplots():
     """
     plt.style.use('ggplot')
 
-    labelsizes = 15
+    labelsizes = 18
 
+	plt.rcParams['font.sans-serif'] = 'Arial'
     plt.rcParams['font.size'] = labelsizes
-    plt.rcParams['axes.titlesize'] = 12
+    plt.rcParams['axes.titlesize'] = labelsizes - 2
     plt.rcParams['axes.labelsize'] = labelsizes
     plt.rcParams['xtick.labelsize'] = labelsizes
     plt.rcParams['ytick.labelsize'] = labelsizes

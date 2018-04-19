@@ -169,6 +169,11 @@ def parse_generic_msid(msid, valtype):
     Parse & convert the CSVs from MSIDCloud relevant to this study.
     """
 
+    valid_valtypes = ["samples", "midvals", "vals", "mins", "maxes", "means", "stds"]
+
+    if valtype not in valid_valtypes:
+    	raise ValueError('Invalid valtype. Must be one of {}'.format(valid_valtypes))
+
     msid = ascii.read(msid, format="fast_csv")
 
     times = convert_chandra_time(msid["times"])

@@ -31,7 +31,7 @@ def styleplots():
 
     labelsizes = 18
 
-	plt.rcParams['font.sans-serif'] = 'Arial'
+    plt.rcParams['font.sans-serif'] = 'Arial'
     plt.rcParams['font.size'] = labelsizes
     plt.rcParams['axes.titlesize'] = labelsizes - 2
     plt.rcParams['axes.labelsize'] = labelsizes

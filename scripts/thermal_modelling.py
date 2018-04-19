@@ -35,7 +35,7 @@ msids =  [
 				"2IMINATM",  # Imaging Det Temperature (c)
 				"2SPHVATM",  # Spectroscopy Det HVPS Temperature (c)
 				"2SPINATM",  # Spectroscopy Det Temperature (c)
-				"2PMT1T",    # PMT 1 EED Temperature (c)	
+				"2PMT1T",    # PMT 1 EED Temperature (c)
 				"2PMT2T",    # PMT 2 EED Temperature (c)
 				"2DCENTRT",  # Outdet2 EED Temperature (c)
 				"2FHTRMZT",  # FEABox EED Temperature (c)
@@ -64,8 +64,10 @@ hrc.styleplots()
 
 fig, ax = plt.subplots(figsize=(16,8))
 
-for msidname in msids: 
+for msidname in msids:
 	ax.plot_date(data["{}_times".format(msidname)], data["{}_values".format(msidname)], '-')
+	ax.set_ylabel('Temperature (C)')
+	ax.set_xlabel('Date')
 
 #ax.set_ylim = (0,10)
 

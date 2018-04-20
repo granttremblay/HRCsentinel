@@ -242,13 +242,16 @@ def parse_scs107s(scs107s_table):
     return scs107times
 
 
-def quickplot(x, save=False, filename=None):
+def quickplot(x, save=False, filename=None, markersize=2.0, lw=0):
     """
     A quicklook function to only plot an MSID vs its index (e.g., for get dates, etc)
     """
+
+    styleplots()
+
     fig, ax = plt.subplots(figsize=(12, 8))
 
-    ax.plot(x, marker='o', markersize=1, lw=0, rasterized=True)
+    ax.plot(x, marker='o', markersize=markersize, lw=0, rasterized=True)
     ax.set_ylabel('Telemetry Value')
     ax.set_xlabel('Index of Telemetry Datapoint')
 
@@ -256,6 +259,30 @@ def quickplot(x, save=False, filename=None):
 
     if save is True:
         if filename is not None:
-            fig.savefig(filename, dpi=400)
+            fig.savefig(filename, dpi=300, bbox_inches='tight')
         else:
             print("Specify a filename (i.e. 'figure.pdf').")
+
+
+def dateplot(times, values, ylabel="Remember to set ylabel=Name", save=False, filename=None, markersize=2.0, lw=0):
+    """
+    Plot an MSID by a proper date
+    """
+
+    styleplots()
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    ax.plot_date(times, values, 'o', markersize=markersize, lw=lw)
+
+    ax.set_ylabel(ylabel)
+    ax.set_xlabel("Date")
+
+    plt.show()
+
+    if save is True:
+        if filename is not None:
+            fig.savefig(filename, dpi=300, bbox_inches='tight')
+        else:
+            print("Specify a filename (i.e. 'figure.pdf').")
+
+

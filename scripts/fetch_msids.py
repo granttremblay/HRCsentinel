@@ -114,7 +114,7 @@ def main():
                 "2DTSTATT" # OutDet1 Temperature (c)
         		]
 
-    hrcmsids_fullres = ["2SHEV1RT", "2TLEV1RT", "2CE00ATM", "2CE01ATM", "2SPHVATM", "2IMHVATM", "2FE00ATM"]
+    hrcmsids_fullres = ["2SHEV1RT", "2TLEV1RT", "2CE00ATM", "2CE01ATM", "2SPHVATM", "2IMHVATM", "2FE00ATM", "2FHTRMZT", "2FRADPYT"]
 
     spacecraft_orbit_pseudomsids = ["Dist_SatEarth", # Chandra-Earth distance (from Earth Center) (m)
 		                    "Point_SunCentAng" # Pointing-Solar angle (from center) (deg)

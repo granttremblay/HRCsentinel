@@ -35,7 +35,7 @@ def fetch_mission_events(events_to_query):
         table = event.table
         table.write("{}_table.csv".format(item), format="csv")
         print("{} [DONE]".format(item))
-        os.system("scp -q {}_table.csv grant@symmetry.cfa.harvard.edu:/Users/grant/Dropbox/HRCOps/MSIDCloud/".format(item))
+        os.system("scp -q {}_table.csv grant@symmetry.cfa.harvard.edu:/Users/grant/Dropbox/Work/HRCOps/MSIDCloud/".format(item))
         os.remove("{}_table.csv".format(item))
     
     # SPECIAL REQUESTS TO BE RUN OUTSIDE OF FOR LOOP

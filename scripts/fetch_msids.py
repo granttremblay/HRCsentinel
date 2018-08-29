@@ -62,7 +62,7 @@ def fetch_msids(msidlist, sampling, timespan):
         os.rename(msid + ".csv", csvname)
 
         # Quietly SCP to my MSID cloud on Dropbox
-        os.system("scp -q {} grant@symmetry.cfa.harvard.edu:/Users/grant/Dropbox/HRCOps/MSIDCloud/".format(csvname))
+        os.system("scp -q {} grant@symmetry.cfa.harvard.edu:/Users/grant/Dropbox/Work/HRCOps/MSIDCloud/".format(csvname))
 
         # Remove the temporary files to keep things clean
         os.remove(msid + ".zip")

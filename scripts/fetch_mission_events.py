@@ -44,7 +44,7 @@ def fetch_mission_events(events_to_query):
     highrad_table = highrad.table
     highrad_table.write("highradiation_table.csv", format="csv")
     print("Special search for RadMon Trips [DONE]")
-    os.system("scp -q highradiation_table.csv grant@symmetry.cfa.harvard.edu:/Users/grant/Dropbox/HRCOps/MSIDCloud/")
+    os.system("scp -q highradiation_table.csv grant@symmetry.cfa.harvard.edu:/Users/grant/Dropbox/Work/HRCOps/MSIDCloud/")
     os.remove("highradiation_table.csv")
 
     print("Push to MSID Cloud [DONE]")

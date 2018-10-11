@@ -32,7 +32,7 @@ def main():
     script_location = os.getcwd()
     homedirectory = os.path.expanduser("~")
 
-    msidcloud_directory = homedirectory + "/Dropbox/HRCOps/MSIDCloud/"
+    msidcloud_directory = homedirectory + "/Dropbox/Work/HRCOps/MSIDCloud/"
 
     #print("Making sure you're in {}".format(goes_data_directory))
     os.chdir(msidcloud_directory)

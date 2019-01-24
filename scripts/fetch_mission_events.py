@@ -2,11 +2,8 @@
 
 '''Fetch mission events from the KADI Database and push them 
 to Grant Tremblay's MSID Cloud on symmetry.cfa.harvard.edu
-
-
 I run this with a cron job every day at 1am, from a machine 
 on the HEAD network. 
-
 This script accompanies fetch_msids.py, also run via a cron job.  
 '''
 

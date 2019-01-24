@@ -64,7 +64,7 @@ def main():
     os.chdir(working_dir)
 
     # Pick the events you want
-    events = ["obsids", "orbits", "dsn_comms", "dwells", "eclipses", "rad_zones", "safe_suns", "scs107s", "major_events", "HRC_SS_HK_BAD"]
+    events = ["obsids", "orbits", "dsn_comms", "dwells", "eclipses", "rad_zones", "safe_suns", "scs107s", "major_events"]
 
     fetch_mission_events(events)
 

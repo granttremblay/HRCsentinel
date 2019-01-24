@@ -114,8 +114,8 @@ def main():
                 "2DTSTATT" # OutDet1 Temperature (c)
         		]
 
-    hrcmsids_fullres = ["2SHEV1RT", 
-                        "2TLEV1RT", 
+    hrcmsids_fullres = ["2SHEV1RT",
+                        "2TLEV1RT",
                         "2FE00ATM",  # Front-end Temperature (c)
                         "2LVPLATM",  # LVPS Plate Temperature (c)
                         "2IMHVATM",  # Imaging Det HVPS Temperature (c)
@@ -140,7 +140,8 @@ def main():
 
 
     spacecraft_orbit_pseudomsids = ["Dist_SatEarth", # Chandra-Earth distance (from Earth Center) (m)
-		                    "Point_SunCentAng" # Pointing-Solar angle (from center) (deg)
+		                    "Point_SunCentAng",      # Pointing-Solar angle (from center) (deg)
+                            "HRC_SS_HK_BAD"          # Times flagged as Secondary Science Corruption
 		                   ]
 
     #fetch_msids(hrcmsids_fullres, sampling="full", timespan="lifetime")

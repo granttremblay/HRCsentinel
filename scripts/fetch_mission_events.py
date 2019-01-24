@@ -1,10 +1,10 @@
 #!/proj/sot/ska/bin/python
 
-'''Fetch mission events from the KADI Database and push them 
+'''Fetch mission events from the KADI Database and push them
 to Grant Tremblay's MSID Cloud on symmetry.cfa.harvard.edu
-I run this with a cron job every day at 1am, from a machine 
-on the HEAD network. 
-This script accompanies fetch_msids.py, also run via a cron job.  
+I run this with a cron job every day at 1am, from a machine
+on the HEAD network.
+This script accompanies fetch_msids.py, also run via a cron job.
 '''
 
 from __future__ import print_function
@@ -27,14 +27,14 @@ except:
 def fetch_mission_events(events_to_query):
 
     for item in events_to_query:
-        
-        event = getattr(events, "{}".format(item)) # This just calls events.eclipses, events.rad_zones, etc. 
+
+        event = getattr(events, "{}".format(item)) # This just calls events.eclipses, events.rad_zones, etc.
         table = event.table
         table.write("{}_table.csv".format(item), format="csv")
         print("{} [DONE]".format(item))
         os.system("scp -q {}_table.csv grant@symmetry.cfa.harvard.edu:/Users/grant/Dropbox/Work/HRCOps/MSIDCloud/".format(item))
         os.remove("{}_table.csv".format(item))
-    
+
     # SPECIAL REQUESTS TO BE RUN OUTSIDE OF FOR LOOP
 
     highrad = events.major_events.filter(note__icontains='radiation')
@@ -58,13 +58,13 @@ def main():
     print("=======================================")
     print(today.strftime("Updating Mission Events for %d %b %Y"))
     print("=======================================")
- 
+
     # set the working directory.
     working_dir = "/home/tremblay/MSIDs"
     os.chdir(working_dir)
 
     # Pick the events you want
-    events = ["obsids", "orbits", "dsn_comms", "dwells", "eclipses", "rad_zones", "safe_suns", "scs107s", "major_events"]
+    events = ["obsids", "orbits", "dsn_comms", "dwells", "eclipses", "rad_zones", "safe_suns", "scs107s", "major_events", "HRC_SS_HK_BAD"]
 
     fetch_mission_events(events)
 

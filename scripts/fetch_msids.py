@@ -149,11 +149,11 @@ def main():
 
     secondary_science_corruption = ["HRC_SS_HK_BAD"] # Times flagged as Secondary Science Corruption
 
-    #fetch_msids(hrcmsids_fullres, sampling="full", timespan="lifetime")
-    # fetch_msids(hrcmsids, sampling="daily", timespan="lifetime")
-    # fetch_msids(hrcmsids, sampling="5min", timespan="lifetime")
-    # fetch_msids(hrcmsids_fullres, sampling="full", timespan="pastyear")
-    # fetch_msids(spacecraft_orbit_pseudomsids, sampling="5min", timespan="lifetime")
+    fetch_msids(hrcmsids_fullres, sampling="full", timespan="lifetime")
+    fetch_msids(hrcmsids, sampling="daily", timespan="lifetime")
+    fetch_msids(hrcmsids, sampling="5min", timespan="lifetime")
+    fetch_msids(hrcmsids_fullres, sampling="full", timespan="pastyear")
+    fetch_msids(spacecraft_orbit_pseudomsids, sampling="5min", timespan="lifetime")
     fetch_msids(secondary_science_corruption, sampling="full", timespan="pastfiveyears")
 
     runtime = round(((time.time() - start_time)/60.0), 0)

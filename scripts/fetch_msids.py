@@ -29,7 +29,7 @@ def fetch_msids(msidlist, sampling, timespan):
 
     # You're only allowed to choose between these sampling & timespan options
     sampling_options = {"5min", "daily", "full"}
-    timespan_options = {"lifetime", "pastyear", "pastthreeyears"}
+    timespan_options = {"lifetime", "pastyear", "pastthreeyears", "pastfiveyears"}
 
     if sampling not in sampling_options:
         sys.exit("Sampling can only be set to 'full', '5min', or 'daily'.")
@@ -44,6 +44,8 @@ def fetch_msids(msidlist, sampling, timespan):
         start = " --start=2017:001"
     elif timespan == "pastthreeyears":
         start = " --start=2015:001"
+    elif timespan == "pastfiveyears":
+        start = " --start=2013:001"
 
     # Loop through the MSID list
 
@@ -152,7 +154,7 @@ def main():
     # fetch_msids(hrcmsids, sampling="5min", timespan="lifetime")
     # fetch_msids(hrcmsids_fullres, sampling="full", timespan="pastyear")
     # fetch_msids(spacecraft_orbit_pseudomsids, sampling="5min", timespan="lifetime")
-    fetch_msids(secondary_science_corruption, sampling="full", timespan="pastthreeyears")
+    fetch_msids(secondary_science_corruption, sampling="full", timespan="pastfiveyears")
 
     runtime = round(((time.time() - start_time)/60.0), 0)
     print("=====================================")

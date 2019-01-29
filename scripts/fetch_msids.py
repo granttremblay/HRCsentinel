@@ -29,7 +29,7 @@ def fetch_msids(msidlist, sampling, timespan):
 
     # You're only allowed to choose between these sampling & timespan options
     sampling_options = {"5min", "daily", "full"}
-    timespan_options = {"lifetime", "pastyear"}
+    timespan_options = {"lifetime", "pastyear", "pastthreeyears"}
 
     if sampling not in sampling_options:
         sys.exit("Sampling can only be set to 'full', '5min', or 'daily'.")

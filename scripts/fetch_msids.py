@@ -150,7 +150,7 @@ def main():
     # fetch_msids(hrcmsids, sampling="5min", timespan="lifetime")
     # fetch_msids(hrcmsids_fullres, sampling="full", timespan="pastyear")
     # fetch_msids(spacecraft_orbit_pseudomsids, sampling="5min", timespan="lifetime")
-    fetch_msids(secondary_science_corruption, timespan="pastyear")
+    fetch_msids(secondary_science_corruption, sampling="full", timespan="pastyear")
 
     runtime = round(((time.time() - start_time)/60.0), 0)
     print("=====================================")

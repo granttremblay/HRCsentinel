@@ -140,15 +140,17 @@ def main():
 
 
     spacecraft_orbit_pseudomsids = ["Dist_SatEarth", # Chandra-Earth distance (from Earth Center) (m)
-		                    "Point_SunCentAng",      # Pointing-Solar angle (from center) (deg)
-                            "HRC_SS_HK_BAD"          # Times flagged as Secondary Science Corruption
+		                    "Point_SunCentAng"      # Pointing-Solar angle (from center) (deg)
 		                   ]
 
+    secondary_science_corruption = ["HRC_SS_HK_BAD"] # Times flagged as Secondary Science Corruption
+
     #fetch_msids(hrcmsids_fullres, sampling="full", timespan="lifetime")
-    fetch_msids(hrcmsids, sampling="daily", timespan="lifetime")
-    fetch_msids(hrcmsids, sampling="5min", timespan="lifetime")
-    fetch_msids(hrcmsids_fullres, sampling="full", timespan="pastyear")
-    fetch_msids(spacecraft_orbit_pseudomsids, sampling="5min", timespan="lifetime")
+    # fetch_msids(hrcmsids, sampling="daily", timespan="lifetime")
+    # fetch_msids(hrcmsids, sampling="5min", timespan="lifetime")
+    # fetch_msids(hrcmsids_fullres, sampling="full", timespan="pastyear")
+    # fetch_msids(spacecraft_orbit_pseudomsids, sampling="5min", timespan="lifetime")
+    fetch_msids(secondary_science_corruption, timespan="pastyear")
 
     runtime = round(((time.time() - start_time)/60.0), 0)
     print("=====================================")

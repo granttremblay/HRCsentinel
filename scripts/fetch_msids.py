@@ -96,6 +96,10 @@ def main():
                 "2TLEV1RT",  # HRC Detector Event Rates (c/s) (1)
                 "2PRBSVL",   # Primary Bus Voltage (V)
         		"2PRBSCR",   # Primary Bus Current (amps)
+                "2C05PALV",  # +5V Bus Monitor
+                "2C15NALV",  # -15V Bus Monitor
+                "2C15PALV",  # +15V Bus Monitor
+                "2C24PALV",  # +24V Bus Monitor
                 "2FE00ATM",  # Front-end Temperature (c)
         		"2LVPLATM",  # LVPS Plate Temperature (c)
         		"2IMHVATM",  # Imaging Det HVPS Temperature (c)
@@ -149,12 +153,12 @@ def main():
 
     secondary_science_corruption = ["HRC_SS_HK_BAD"] # Times flagged as Secondary Science Corruption
 
-    fetch_msids(hrcmsids_fullres, sampling="full", timespan="lifetime")
+    #fetch_msids(hrcmsids_fullres, sampling="full", timespan="lifetime")
     fetch_msids(hrcmsids, sampling="daily", timespan="lifetime")
     fetch_msids(hrcmsids, sampling="5min", timespan="lifetime")
-    fetch_msids(hrcmsids_fullres, sampling="full", timespan="pastyear")
+    fetch_msids(hrcmsids, sampling="full", timespan="pastyear")
     fetch_msids(spacecraft_orbit_pseudomsids, sampling="5min", timespan="lifetime")
-    fetch_msids(secondary_science_corruption, sampling="full", timespan="pastfiveyears")
+    fetch_msids(secondary_science_corruption, sampling="full", timespan="pastyear")
 
     runtime = round(((time.time() - start_time)/60.0), 0)
     print("=====================================")

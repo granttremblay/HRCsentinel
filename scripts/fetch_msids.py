@@ -143,7 +143,9 @@ def main():
                         "2CE01ATM",  # CEA Temperature 2 (c) THESE HAVE FEWER POINTS AS THEY WERE RECENTLY ADDED BY TOM
                         "2FEPRATM",  # FEA PreAmp (c)
                         "2SMTRATM",  # Selected Motor Temperature (c) THIS IS ALWAYS 5 DEGREES THROUGHOUT ENTIRE MISSION
-                        "2DTSTATT"   # OutDet1 Temperature (c)
+                        "2DTSTATT",  # OutDet1 Temperature (c)
+                        "2IMTPAST",
+                        "2IMBPAST"
                         ]
 
 

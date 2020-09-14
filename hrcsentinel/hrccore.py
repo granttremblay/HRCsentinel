@@ -71,8 +71,6 @@ def convert_chandra_time(rawtimes):
     return chandratime
 
 
-
-
 def convert_orbit_time(rawtimes):
     """
     The orbit table gives times in the format: 2000:003:15:27:47.271, i.e.
@@ -89,6 +87,7 @@ def convert_orbit_time(rawtimes):
             rawtimes[i], "%Y:%j:%H:%M:%S.%f"))
 
     return orbittime
+
 
 def convert_goes_time(rawtimes):
 
@@ -131,7 +130,6 @@ def convert_goes_time_in_stacked_tables(rawtable):
     return goestimes
 
 
-
 def estimate_HRC_shieldrates(master_table):
     '''
     Makes two estimates of the HRC shield rate, according
@@ -163,16 +161,17 @@ def estimate_HRC_shieldrates(master_table):
     return hrc_est_rate1, hrc_est_rate2
 
 
-
 def parse_generic_msid(msid, valtype):
     """
     Parse & convert the CSVs from MSIDCloud relevant to this study.
     """
 
-    valid_valtypes = ["samples", "midvals", "vals", "mins", "maxes", "means", "stds"]
+    valid_valtypes = ["samples", "midvals",
+                      "vals", "mins", "maxes", "means", "stds"]
 
     if valtype not in valid_valtypes:
-    	raise ValueError('Invalid valtype. Must be one of {}'.format(valid_valtypes))
+        raise ValueError(
+            'Invalid valtype. Must be one of {}'.format(valid_valtypes))
 
     msid = ascii.read(msid, format="fast_csv")
 
@@ -201,7 +200,6 @@ def parse_orbits(orbit_msid):
     '''
     WRITE ME!!! 
     '''
-    
 
     # Make sure the .csv file exists before trying this:
     if os.path.isfile(orbit_msid):
@@ -237,7 +235,8 @@ def parse_scs107s(scs107s_table):
 
     scs107times = convert_chandra_time(scs107s['tstart'])
 
-    print("Found {} executions of SCS 107 over the mission lifetime".format(len(scs107times)))
+    print("Found {} executions of SCS 107 over the mission lifetime".format(
+        len(scs107times)))
 
     return scs107times
 
@@ -284,5 +283,3 @@ def dateplot(times, values, ylabel="Remember to set ylabel=Name", save=False, fi
             fig.savefig(filename, dpi=300, bbox_inches='tight')
         else:
             print("Specify a filename (i.e. 'figure.pdf').")
-
-
